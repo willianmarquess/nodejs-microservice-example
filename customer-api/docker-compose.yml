@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  db-customer:
+    image: mongo
+    container_name: db-customer
+    restart: always
+    env_file: ./.env
+    ports: 
+      - $DB_PORT:27017
+    environment:
+      MONGO_INITDB_DATABASE: $DB_NAME
+      MONGO_INITDB_ROOT_USERNAME: $DB_USER
+      MONGO_INITDB_ROOT_PASSWORD: $DB_PASS
+  api-customer:
+      image: node:latest
+      container_name: api-customer
+      restart: always
+      env_file:
+      - ./.env
+      depends_on:
+        - db-customer
+      ports:
+        - $SERVER_PORT:$SERVER_PORT
+      environment:
+        - DB_HOST=db-customer
+      volumes:
+        - .:/usr/src/app
+      working_dir: /usr/src/app
+      command: bash -c "npm install && npm run start:dev"

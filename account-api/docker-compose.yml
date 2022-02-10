@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  db:
+    image: mongo
+    container_name: db
+    restart: always
+    env_file: ./.env
+    ports: 
+      - $DB_PORT:27017
+    environment:
+      MONGO_INITDB_DATABASE: $DB_NAME
+      MONGO_INITDB_ROOT_USERNAME: $DB_USER
+      MONGO_INITDB_ROOT_PASSWORD: $DB_PASS
+  api-account:
+      image: node:latest
+      container_name: api-account
+      restart: always
+      env_file:
+      - ./.env
+      depends_on:
+        - db
+      ports:
+        - $SERVER_PORT:$SERVER_PORT
+        - 9229:9229
+      environment:
+        - DB_HOST=db
+      volumes:
+        - .:/usr/src/app
+      working_dir: /usr/src/app
+      command: bash -c "npm install && npm run start:debug"
+      logging:
+        driver: "json-file"
+        options:
+          max-size: "20m"
+          max-file: "5"

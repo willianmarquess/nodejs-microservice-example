@@ -1,0 +1,114 @@
+version: "3.8"
+services:
+#  db-customer:
+#    image: mongo
+#    container_name: db-customer
+#    restart: always
+#    env_file:
+#      - ./.env
+#    ports: 
+#      - $CUSTOMER_DB_PORT:27017
+#    environment:
+#      MONGO_INITDB_DATABASE: $CUSTOMER_DB_NAME
+#      MONGO_INITDB_ROOT_USERNAME: $CUSTOMER_DB_USER
+#      MONGO_INITDB_ROOT_PASSWORD: $CUSTOMER_DB_PASS
+#    networks:
+#        - customer
+  
+  db-account:
+    image: mongo
+    container_name: db-account
+    restart: always
+    env_file:
+      - ./.env
+    ports: 
+      - $ACCOUNT_DB_PORT:27017
+    environment:
+      MONGO_INITDB_DATABASE: $ACCOUNT_DB_NAME
+      MONGO_INITDB_ROOT_USERNAME: $ACCOUNT_DB_USER
+      MONGO_INITDB_ROOT_PASSWORD: $ACCOUNT_DB_PASS
+    networks:
+        - account
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    env_file:
+      - ./.env
+    ports:
+      - $RABBIT_SERVER_PORT:5672
+      - $RABBIT_DASH_PORT:15672
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=$RABBIT_USER
+      - RABBITMQ_DEFAULT_PASS=$RABBIT_PASS
+    networks:
+        - customer
+#
+#  api-customer:
+#      image: node:latest
+#      container_name: api-customer
+#      env_file:
+#      - ./.env
+#      restart: always
+#      depends_on:
+#        - db-customer
+#        - rabbitmq
+#      ports:
+#        - $CUSTOMER_SERVER_PORT:$CUSTOMER_SERVER_PORT
+#        - 9229:9229
+#      environment:
+#        - DB_HOST=db-customer
+#        - RABBIT_HOST=rabbitmq
+#        - SERVER_PORT=$CUSTOMER_SERVER_PORT
+#        - DB_PORT=$CUSTOMER_DB_PORT
+#        - DB_NAME=$CUSTOMER_DB_NAME
+#        - DB_USER=$CUSTOMER_DB_USER
+#        - DB_PASS=$CUSTOMER_DB_PASS
+#        - RABBIT_USER=$RABBIT_USER
+#        - RABBIT_PASS=$RABBIT_PASS
+#        - RABBIT_SERVER_PORT=$RABBIT_SERVER_PORT
+#      volumes:
+#        - ./customer-api/:/usr/src/app
+#      working_dir: /usr/src/app
+#      networks:
+#        - customer
+#      command: bash -c "npm install && npm run start"
+
+  api-account:
+      image: node:latest
+      container_name: api-account
+      env_file:
+      - ./.env
+      restart: always
+      depends_on:
+        - db-account
+        - rabbitmq
+      ports:
+        - $ACCOUNT_SERVER_PORT:$ACCOUNT_SERVER_PORT
+        - 9228:9228
+      environment:
+        - DB_HOST=db-account
+        - RABBIT_HOST=rabbitmq
+        - SERVER_PORT=$ACCOUNT_SERVER_PORT
+        - DB_PORT=$ACCOUNT_DB_PORT
+        - DB_NAME=$ACCOUNT_DB_NAME
+        - DB_USER=$ACCOUNT_DB_USER
+        - DB_PASS=$ACCOUNT_DB_PASS
+        - RABBIT_USER=$RABBIT_USER
+        - RABBIT_PASS=$RABBIT_PASS
+        - RABBIT_SERVER_PORT=$RABBIT_SERVER_PORT
+      volumes:
+        - ./account-api/:/usr/src/app
+      working_dir: /usr/src/app
+      networks:
+        - account
+      command: bash -c "npm install && npm run start"
+
+networks:
+  account:
+    driver: bridge
+  customer:
+    driver: bridge

@@ -1,0 +1,32 @@
+{
+  "name": "account-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "dev": "nodemon src/server.js",
+    "start1": "pm2 start src/server.js --watch --no-daemon",
+    "start": "node src/server.js",
+    "start:debug": "node --inspect=0.0.0.0 src/server.js"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.1",
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2",
+    "mongodb": "^4.3.0",
+    "mongoose": "^6.1.6",
+    "pm2": "^5.1.2",
+    "save-dev": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
