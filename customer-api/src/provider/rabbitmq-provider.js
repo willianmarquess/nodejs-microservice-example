@@ -10,7 +10,7 @@ class RabbitMQProvider {
         this.url = url;
     }
 
-    async connect() {
+    async createConnection() {
         try {
             if (!this.connection) {
                 this.connection = await connect(this.url);
@@ -18,8 +18,8 @@ class RabbitMQProvider {
                 console.log('rabbitmq connected');
             }
         } catch (error) {
-            console.log('try to reconnect rabbitmq...');
-            return this.connect();
+            console.log('Error when try to connect rabbitmq...', error);
+            throw error;
         }
     }
 
@@ -42,7 +42,6 @@ class RabbitMQProvider {
     publishInExchange(exchange, routingKey, message) {
         return this.channel.publish(exchange, routingKey, Buffer.from(JSON.stringify(message)));
     }
-
 
     async consumeMessage(queue, callback) {
         return await this.channel.consume(queue, (message) => {

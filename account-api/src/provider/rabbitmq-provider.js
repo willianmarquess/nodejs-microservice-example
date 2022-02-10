@@ -1,3 +1,4 @@
+import { connect } from "amqplib";
 import { RABBIT_CONFIG } from "../config/rabbitmq-config.js";
 
 class RabbitMQProvider {
@@ -9,7 +10,7 @@ class RabbitMQProvider {
         this.url = url;
     }
 
-    async connect() {
+    async createConnection() {
         try {
             if (!this.connection) {
                 this.connection = await connect(this.url);
@@ -17,8 +18,8 @@ class RabbitMQProvider {
                 console.log('rabbitmq connected');
             }
         } catch (error) {
-            console.log('try to reconnect rabbitmq...');
-            return this.connect();
+            console.log('Error when try to connect rabbitmq...', error);
+            throw error;
         }
     }
 

@@ -3,9 +3,9 @@ import rabbitInstance from "./rabbitmq-provider.js";
 export default class RabbitMQSetup{
     static async init() {
         try {
-            await rabbitInstance.connect();
+            await rabbitInstance.createConnection();
         } catch (error) {
-            console.log('error rabbitmq: ', error);
+            throw error;
         }
     }
 } 
