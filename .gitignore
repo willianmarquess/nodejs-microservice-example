@@ -1,6 +1,6 @@
+.env
 /account-api/node_modules
 /account-api/.vscode
 /customer-api/node_modules
 /customer-api/.vscode
 /rabbitmq
-.env
