@@ -4,7 +4,7 @@ import rabbitInstance from './rabbitmq-provider.js';
 export default class RabbitMQSetup{
     static async init() {
         try {
-            await rabbitInstance.connect();
+            await rabbitInstance.createConnection();
             await rabbitInstance.createExchange(RABBIT_CONFIG.EXCHANGE_NAME, RABBIT_CONFIG.EXCHANGE_TYPE_DIRECT);
     
             await rabbitInstance.createQueue(RABBIT_CONFIG.QUEUE_CUSTOMER_CREATED);

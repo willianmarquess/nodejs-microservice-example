@@ -1,6 +1,6 @@
-import AccountController from "../controller/account-controller.js";
-import { Account } from "../model/account.js";
-import AccountService from "../service/account-service.js";
+import AccountController from "../account-controller.js";
+import { Account } from "../../model/account.js";
+import AccountService from "../../service/account-service.js";
 
 export default class AccountControllerFactory{
     static create(){

@@ -9,7 +9,12 @@ const CustomerSchema = new mongoose.Schema({
     document_number: {
         type: String,
         required: true
-    }   
+    },
+    
+    customer_service_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    }
 },
 {
     timestamps: true

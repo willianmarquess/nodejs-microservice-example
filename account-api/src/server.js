@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import mongoose from 'mongoose';
 import accountRouter from './routes/account-routes.js';
-import { MONGO_CONFIG } from './config/mongo-config.js'
 import RabbitMQSetup from './provider/rabbitmq-setup.js';
+import mongoose  from 'mongoose';
+import { MONGO_CONFIG } from './config/mongo-config.js';
 
 const { SERVER_PORT } = process.env;
 

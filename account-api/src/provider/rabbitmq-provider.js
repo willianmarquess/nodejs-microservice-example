@@ -47,7 +47,7 @@ class RabbitMQProvider {
         return await this.channel.consume(queue, (message) => {
             callback(message);
             this.channel.ack(message);
-        })
+        });
     }
 }
 

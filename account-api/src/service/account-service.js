@@ -25,12 +25,12 @@ export default class AccountService{
     }
     
     async findAll() {
-        const accounts = await this.accountModel.find();
+        const accounts = await this.accountModel.find().populate('customer').exec();
         return accounts;
     }
     
     async findById(id) {
-        const account = await this.accountModel.findById(id);
+        const account = await this.accountModel.findById(id).populate('customer').exec();
         return account;
     }
     

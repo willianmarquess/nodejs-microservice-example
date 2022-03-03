@@ -3,3 +3,4 @@
 /customer-api/node_modules
 /customer-api/.vscode
 /rabbitmq
+.env
