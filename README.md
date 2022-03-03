@@ -28,4 +28,4 @@ cada serviço com o seu banco de dados e contexto separados se comunicando atrav
 Fluxo de eventos (comunicação assíncrona)
 - Quando um customer é modificado (CRUD) no contexto do customer-api ele dispara um evento para o message broker (customer-created, customer-updated, customer-deleted), esse evento é enviado para uma fila no RabbitMQ e no serviço account-api existem os consumers que irão alimentar o banco de dados com esses eventos, promovendo assim uma integridade nos dados dos dois serviços.
 
-<img src="https://files.slack.com/files-pri/TM13XHBBQ-F0368HR9HKJ/micro-services-img.png" alt="logo">
+<img src="micro-services-img.png" alt="logo">
