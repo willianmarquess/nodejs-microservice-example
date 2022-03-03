@@ -29,7 +29,7 @@ services:
       command: mongod --port $ACCOUNT_DB_PORT
 
   rabbitmq:
-    image: rabbitmq:3-management
+    build: ./
     container_name: rabbitmq
     restart: always
     env_file:
@@ -37,6 +37,11 @@ services:
     ports:
       - $RABBIT_SERVER_PORT:5672
       - $RABBIT_DASH_PORT:15672
+    healthcheck:
+        test: curl -f http://localhost:15672 || exit 1
+        interval: 30s
+        timeout: 10s
+        retries: 5
     volumes:
       - ./rabbitmq:/var/lib/rabbitmq/
     environment:
@@ -50,8 +55,10 @@ services:
       - ./.env
       restart: always
       depends_on:
-        - db-customer
-        - rabbitmq
+        db-customer:
+          condition: service_started
+        rabbitmq: 
+          condition: service_healthy
       ports:
         - $CUSTOMER_SERVER_PORT:$CUSTOMER_SERVER_PORT
         - 9229:9229
@@ -78,8 +85,10 @@ services:
       - ./.env
       restart: always
       depends_on:
-        - db-account
-        - rabbitmq
+        db-account:
+          condition: service_started
+        rabbitmq: 
+          condition: service_healthy
       ports:
         - $ACCOUNT_SERVER_PORT:$ACCOUNT_SERVER_PORT
         - 9228:9228
